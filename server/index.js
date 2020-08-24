@@ -1,10 +1,15 @@
 import Geckos from "@geckos.io/server";
+import Game from "./Game.js";
 
 const io = Geckos.default();
 io.listen(3000);
 
+const game = new Game(io, {
+  maxPlayerCapacity: 3,
+});
+
 io.onConnection((player) => {
-  player.emit("connect", {
-    position: { x: 0, y: 0, z: 0 },
-  });
+  if (game.playerCount < game.maxPlayerCapacity) {
+    game.join(player);
+  }
 });

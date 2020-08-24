@@ -11,7 +11,7 @@ channel.onConnect((error) => {
 
   channel.onDisconnect(() => {});
 
-  channel.on("connect", (data) => {
+  channel.on("join", (data) => {
     console.log(data);
   });
 });

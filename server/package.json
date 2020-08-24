@@ -10,7 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "@geckos.io/server": "^1.7.0",
-    "three": "^0.119.1"
+    "three": "^0.119.1",
+    "uuid": "^8.3.0"
   },
   "type": "module"
 }
