@@ -1,7 +1,9 @@
 import geckos from "@geckos.io/client";
 import css from "./styles.css";
+import Game from "./Game";
 
 const channel = geckos({ port: 3000 });
+const game = new Game();
 
 channel.onConnect((error) => {
   if (error) {
@@ -12,6 +14,7 @@ channel.onConnect((error) => {
   channel.onDisconnect(() => {});
 
   channel.on("join", (data) => {
+    game.init();
     console.log(data);
   });
 });
