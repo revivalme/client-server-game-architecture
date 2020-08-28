@@ -72,10 +72,10 @@ export default class Game {
 
   onWindowResize() {
     // set the aspect ratio to match the new browser window aspect ratio
-    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.activeCamera.aspect = window.innerWidth / window.innerHeight;
 
     // update the camera's frustum
-    this.camera.updateProjectionMatrix();
+    this.activeCamera.updateProjectionMatrix();
 
     // update the size of the renderer AND the canvas
     this.renderer.setSize(window.innerWidth, window.innerHeight);
