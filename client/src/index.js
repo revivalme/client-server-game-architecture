@@ -13,8 +13,7 @@ channel.onConnect((error) => {
 
   channel.onDisconnect(() => {});
 
-  channel.on("join", (data) => {
-    game.init();
-    console.log(data);
+  channel.on("join", ({ position }) => {
+    game.init(position);
   });
 });

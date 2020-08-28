@@ -1,7 +1,12 @@
 import * as THREE from "three";
+import MyPlayer from "./MyPlayer";
 
 export default class Game {
-  init() {
+  constructor() {
+    this.myPlayer = null;
+  }
+
+  init(playerPos) {
     this.clock = new THREE.Clock();
     this.createScene();
     this.createCamera();
@@ -10,6 +15,9 @@ export default class Game {
     this.createRenderer();
 
     window.addEventListener("resize", this.onWindowResize.bind(this));
+
+    this.myPlayer = new MyPlayer(this, playerPos);
+    this.myPlayer.awake();
 
     this.update();
   }
@@ -75,7 +83,11 @@ export default class Game {
   update() {
     const delta = this.clock.getDelta();
 
-    this.renderer.render(this.scene, this.camera);
+    if (this.myPlayer) {
+      this.myPlayer.update(delta);
+    }
+
+    this.renderer.render(this.scene, this.activeCamera);
 
     // Invoke on next frame
     requestAnimationFrame(() => this.update());
