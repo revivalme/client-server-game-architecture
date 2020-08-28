@@ -10,6 +10,11 @@ export default class MyPlayer extends PlayerBase {
 
     this.game = game;
 
+    this.reqSeqNumber = 0;
+    this.inputs = [];
+    this.inputsCopy = [];
+    this.responses = [];
+
     this.keyState = Object.fromEntries(
       [KEY_W, KEY_S, KEY_A, KEY_D, SPACE, SHIFT].map((KEY_CODE) => [
         KEY_CODE,
@@ -39,8 +44,10 @@ export default class MyPlayer extends PlayerBase {
   handleKey(event) {
     const isPressed = event.type === "keydown";
 
-    // if keyState includes keyCode - update keyState
+    // if keyState includes keyCode - send data to server and update keyState
     if (this.keyState[event.keyCode] !== undefined) {
+      // send key to server
+      this.sendKeyToServer(event.keyCode, isPressed);
       // update keyState
       this.keyState[event.keyCode] = isPressed;
     }
@@ -48,8 +55,33 @@ export default class MyPlayer extends PlayerBase {
 
   resetKeyState() {
     for (const key in this.keyState) {
+      if (this.keyState[key]) {
+        // send release keyState to server
+        this.sendKeyToServer(Number(key), false);
+      }
       this.keyState[key] = false;
     }
+  }
+
+  sendKeyToServer(KEY_CODE, isPressed) {
+    this.reqSeqNumber++;
+
+    const payload = {
+      reqSeqNumber: this.reqSeqNumber,
+      type: "movement",
+      details: {
+        key: KEY_CODE,
+        isPressed,
+        camera: {
+          vector: this.vec.setFromMatrixColumn(this.camera.matrix, 0),
+          up: this.camera.up,
+        },
+      },
+    };
+
+    this.inputs.push(payload);
+
+    this.game.channel.emit("message", payload);
   }
 
   addCamera() {

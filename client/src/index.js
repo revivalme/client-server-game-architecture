@@ -3,7 +3,7 @@ import css from "./styles.css";
 import Game from "./Game";
 
 const channel = geckos({ port: 3000 });
-const game = new Game();
+const game = new Game(channel);
 
 channel.onConnect((error) => {
   if (error) {

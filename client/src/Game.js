@@ -2,7 +2,8 @@ import * as THREE from "three";
 import MyPlayer from "./MyPlayer";
 
 export default class Game {
-  constructor() {
+  constructor(channel) {
+    this.channel = channel;
     this.myPlayer = null;
   }
 
