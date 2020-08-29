@@ -16,13 +16,13 @@ Client server real-time multiplayer game architecture based on UDP (via webRTC)
 Client run:
 ```sh
 cd client
-npm run start
+npm start
 ```
 
 Server run:
 ```sh
 cd server
-npm run start
+npm start
 ```
 
 ### Todos
