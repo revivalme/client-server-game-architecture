@@ -15,13 +15,13 @@ Client server real-time multiplayer game architecture based on UDP (via webRTC)
 
 Client run:
 ```sh
-cd ./client
+cd client
 npm run start
 ```
 
 Server run:
 ```sh
-cd ./server
+cd server
 npm run start
 ```
 
