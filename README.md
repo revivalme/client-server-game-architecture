@@ -4,7 +4,7 @@ Client server real-time multiplayer game architecture based on UDP (via webRTC)
 
 ### Based on
 [Real Time Multiplayer in HTML5](http://buildnewgames.com/real-time-multiplayer/)  
-[Fast-Paced Multiplayer (Part I): Client-Server Game Architecture](https://www.gabrielgambetta.com/lag-compensation.html)
+[Fast-Paced Multiplayer (Part I): Client-Server Game Architecture](https://www.gabrielgambetta.com/client-server-game-architecture.html)
 
 ### Technologies
 
@@ -12,6 +12,15 @@ Client server real-time multiplayer game architecture based on UDP (via webRTC)
   - [geckos.io](https://github.com/geckosio/geckos.io)
 
 ### Development
+
+Install dependencies:
+```sh
+cd client
+npm install
+
+cd server
+npm install
+```
 
 Client run:
 ```sh
