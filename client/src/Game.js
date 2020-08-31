@@ -9,6 +9,8 @@ export default class Game {
 
   init(playerPos) {
     this.clock = new THREE.Clock();
+    this.physicsClock = new THREE.Clock();
+
     this.createScene();
     this.createCamera();
     this.createLights();
@@ -19,6 +21,9 @@ export default class Game {
 
     this.myPlayer = new MyPlayer(this, playerPos);
     this.myPlayer.awake();
+
+    // Start a physics loop at a fixed frequency
+    setInterval(() => this.physicsLoop(), 15);
 
     this.update();
   }
@@ -79,6 +84,18 @@ export default class Game {
 
     // update the size of the renderer AND the canvas
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  onServerUpdate(payload) {
+    this.myPlayer.responses.push(...payload);
+  }
+
+  physicsLoop() {
+    const delta = this.physicsClock.getDelta();
+
+    if (this.myPlayer) {
+      this.myPlayer.physicsTick(delta);
+    }
   }
 
   update() {

@@ -1,3 +1,4 @@
+import THREE from "three";
 import { v4 as uuidv4 } from "uuid";
 import Player from "./Player.js";
 
@@ -8,6 +9,8 @@ export default class Game {
     this.players = {};
     this.playerCount = 0;
     this.maxPlayerCapacity = options.maxPlayerCapacity || 3;
+
+    this.physicsClock = new THREE.Clock();
 
     // Start a physics and update loops at a fixed frequency
     setInterval(() => this.physicsLoop(), 15);
@@ -51,8 +54,30 @@ export default class Game {
   }
 
   // update player position
-  physicsLoop() {}
+  physicsLoop() {
+    const delta = this.physicsClock.getDelta();
+
+    for (const id in this.players) {
+      if (this.players.hasOwnProperty(id)) {
+        const player = this.players[id];
+
+        player.instance.physicsTick(delta);
+      }
+    }
+  }
 
   // notify players in room with actual data
-  updateLoop() {}
+  updateLoop() {
+    for (const id in this.players) {
+      if (this.players.hasOwnProperty(id)) {
+        const player = this.players[id];
+
+        if (player.instance.processedInputs.length) {
+          player.emit("serverupdate", player.instance.processedInputs);
+
+          player.instance.processedInputs = [];
+        }
+      }
+    }
+  }
 }

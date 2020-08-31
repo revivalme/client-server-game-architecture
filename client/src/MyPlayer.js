@@ -15,6 +15,8 @@ export default class MyPlayer extends PlayerBase {
     this.inputsCopy = [];
     this.responses = [];
 
+    this.speed = 100;
+
     this.keyState = Object.fromEntries(
       [KEY_W, KEY_S, KEY_A, KEY_D, SPACE, SHIFT].map((KEY_CODE) => [
         KEY_CODE,
@@ -146,30 +148,37 @@ export default class MyPlayer extends PlayerBase {
     this.addControls();
   }
 
-  update(delta) {
-    if (this.controls.isLocked) {
-      this.velocity.z -= this.velocity.z * 7 * delta;
-      this.velocity.x -= this.velocity.x * 7 * delta;
-      this.velocity.y -= this.velocity.y * 7 * delta;
-
-      this.direction.z = +this.keyState[KEY_W] - +this.keyState[KEY_S];
-      this.direction.x = +this.keyState[KEY_D] - +this.keyState[KEY_A];
-      this.direction.y = +this.keyState[SPACE] - +this.keyState[SHIFT];
-
-      this.direction.normalize();
-
-      if (this.keyState[KEY_W] || this.keyState[KEY_S])
-        this.velocity.z -= this.direction.z * 100 * delta;
-      if (this.keyState[KEY_A] || this.keyState[KEY_D])
-        this.velocity.x -= this.direction.x * 100 * delta;
-      if (this.keyState[SPACE] || this.keyState[SHIFT])
-        this.velocity.y -= this.direction.y * 100 * delta;
-
-      this.moveForward(-this.velocity.z * delta);
-      this.moveSide(-this.velocity.x * delta);
-      this.moveUp(-this.velocity.y * delta);
-
-      this.camera.position.copy(this.meshGroup.position);
+  physicsTick(delta) {
+    if (this.responses.length) {
+      // apply all changes of authoritative server state
+      this.responses.forEach((payload) => {
+        if (payload.type === "movement") {
+          this.meshGroup.position.copy(payload.position);
+          this.camera.position.copy(payload.position);
+        }
+      });
     }
+  }
+
+  update(delta) {
+    // if (this.controls.isLocked) {
+    //   this.velocity.z -= this.velocity.z * 7 * delta;
+    //   this.velocity.x -= this.velocity.x * 7 * delta;
+    //   this.velocity.y -= this.velocity.y * 7 * delta;
+    //   this.direction.z = +this.keyState[KEY_W] - +this.keyState[KEY_S];
+    //   this.direction.x = +this.keyState[KEY_D] - +this.keyState[KEY_A];
+    //   this.direction.y = +this.keyState[SPACE] - +this.keyState[SHIFT];
+    //   this.direction.normalize();
+    //   if (this.keyState[KEY_W] || this.keyState[KEY_S])
+    //     this.velocity.z -= this.direction.z * 100 * delta;
+    //   if (this.keyState[KEY_A] || this.keyState[KEY_D])
+    //     this.velocity.x -= this.direction.x * 100 * delta;
+    //   if (this.keyState[SPACE] || this.keyState[SHIFT])
+    //     this.velocity.y -= this.direction.y * 100 * delta;
+    //   this.moveForward(-this.velocity.z * delta);
+    //   this.moveSide(-this.velocity.x * delta);
+    //   this.moveUp(-this.velocity.y * delta);
+    //   this.camera.position.copy(this.meshGroup.position);
+    // }
   }
 }

@@ -15,5 +15,7 @@ channel.onConnect((error) => {
 
   channel.on("join", ({ position }) => {
     game.init(position);
+
+    channel.on("serverupdate", (payload) => game.onServerUpdate(payload));
   });
 });
